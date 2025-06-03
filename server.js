@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/posts');
-const profileRoutes = require('./routes/profile'); // ← new import
+const profileRoutes = require('./routes/profile');
 
 const app = express();
 
@@ -18,7 +18,14 @@ app.use(express.json());
 // Mount route prefixes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api/profile', profileRoutes);   // ← new profile route
+app.use('/api/profile', profileRoutes);
 
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Optional: Add a simple root route
+app.get('/', (req, res) => {
+  res.send('✅ Backend is running on Vercel!');
+});
+
+// Don't call app.listen — instead, export the app
+module.exports = app;
+// This allows Vercel to handle the serverless function deployment
+// and automatically set up the serverless environment
